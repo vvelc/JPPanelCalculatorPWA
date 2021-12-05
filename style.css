@@ -1,0 +1,113 @@
+body {
+    background-color: #f5f5f5;
+}
+
+.panel-calc-container {
+    display: flex;
+    align-items: center;
+    justify-content: center ;
+    background-color: #FBFBFB;
+    min-height: 500px;
+    border-radius: 15px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+}
+
+.panel-calc-container .row {
+    display: flex;
+    width: 100%;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.increment-decrement-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    overflow: hidden;
+}
+
+.increment-decrement-container button {
+    display: grid;
+    place-items: center;
+    border-radius: 0;
+    padding: 0;
+    width: 40px;
+}
+.grid-container {
+    display: grid;
+    background-color: white;
+    border-radius: 10px;
+    height: 400px;
+    width: 100%;
+    place-items: center;
+    overflow-y: auto;
+    overflow-x: auto;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.grid {
+    display: grid;
+    position: relative;
+    grid-template-columns: 1fr 1fr;
+    background-color: white;
+    grid-gap: 2px;
+    font-size: 53.1509px;
+}
+
+.success .cell {
+    background-color: #00bb8c !important;
+}
+
+.grid .cell {
+    background-color: #555555;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    transition: background-color 0.2s ease 0s;
+}
+
+.grid .cell:hover {
+    background-color: #888888;;
+}
+
+.grid::before {
+    display: block;
+    position:absolute;
+    height: 1px;
+    min-width: 80px;
+    top: 0; left: 0; right: 0;
+    transform: translateY(-2rem);
+    font-size: 1rem;
+    text-align: center;
+}
+
+.grid::after {
+    display: flex;
+    position: absolute;
+    height:1px;
+    top: 50%; bottom: 50%;
+    min-width: 100px;
+    font-size: 1rem;
+    transform: translateX(-4.2rem) rotate(-90deg);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

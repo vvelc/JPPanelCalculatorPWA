@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JP Panel Calculator</title>
+    <link href="/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="manifest" href="manifest.webmanifest">
+</head>
+<body>
+    <div class="main-container py-5 px-4">
+        <div class="header container">
+            <h1>JP Panel Calculator</h1>
+        </div>
+        <div class="panel-calc-container container mt-5 py-5 px-4 px-md-5">
+            <div class="row">
+                <div class="col-md-5 mb-5 mb-md-0 form-container">
+                    <h2 class="mb-3">Introduce the size of the screen</h2>
+                    <form id="form">
+                        <div class="form-floating input-group mb-3">
+                            <input class="form-control" type="number" id="width" placeholder="Width" value="3" required>
+                            <label for="width">Width in feet</label>
+                            <div class="increment-decrement-container">
+                                <button class="btn btn-primary" id="inc-width" type="button">+</button>
+                                <button class="btn btn-danger" id="dec-width" type="button">-</button>
+                            </div>
+                        </div>
+                        <div class="form-floating input-group">
+                            <input class="form-control" type="number" id="height" placeholder="Height" value="6" required>
+                            <label for="height">Height in feet</label>
+                            <div class="increment-decrement-container">
+                                <button class="btn btn-primary" id="inc-height" type="button">+</button>
+                                <button class="btn btn-danger" id="dec-height" type="button">-</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="extra-info mt-4">
+                        <p>Area: <span id="areaSpan"></span> m<sup>2</sup></p>
+                        <p>Total Modules: <span id="modulesSpan"></span> Modules</p>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="grid-container">
+                        <div class="grid" id="grid">
+                            <div class="cell"></div>
+                            <div class="cell"></div>
+                            <div class="cell"></div>
+                            <div class="cell"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const widthInput = document.getElementById("width");
+        const heightInput = document.getElementById("height");
+        const grid = document.getElementById("grid");
+
+        const incWidth = document.getElementById("inc-width");
+        const decWidth = document.getElementById("dec-width");
+        const incHeight = document.getElementById("inc-height");
+        const decHeight = document.getElementById("dec-height");
+
+        const areaSpan = document.getElementById('areaSpan');
+        const modulesSpan = document.getElementById('modulesSpan')
+
+        let width = widthInput.value;
+        let height = heightInput.value;
+
+        const cell = '<div class="cell"></div>';
+
+        function updateWidth() {
+            width = widthInput.value;
+
+            if(width % 1.5 == 0 && width != ""){
+                grid.style.width = `${width}em`
+                updateGrid()
+            }
+        }
+
+        function updateHeight() {
+            height = heightInput.value;
+
+            if(height % 3 == 0 && height != ""){
+                grid.style.height = `${height}em`
+                updateGrid()
+            }
+        }
+
+        function updateGrid() {
+            width = widthInput.value;
+            height = heightInput.value
+
+            let widthInCells = Number.parseFloat(width) / 1.5;
+            let heightInCells = Number.parseFloat(height) / 3
+
+            let quantityOfCells = widthInCells * heightInCells;
+
+            let newInnerHTML = "";
+            let newGridWidthTemplate = ""
+            let newGridHeightTemplate = ""
+
+            // Make cells
+            for (let i = 0; i < quantityOfCells; i++) {
+                newInnerHTML += cell
+            }
+            
+            // Make divisions
+            for (let i = 0; i < widthInCells; i++) {
+                newGridWidthTemplate += "1fr "
+            }
+
+            // Make divisions
+            for (let i = 0; i < heightInCells; i++) {
+                newGridHeightTemplate += "1fr "
+            }
+
+            // Set grid templates
+            grid.style.gridTemplateColumns = newGridWidthTemplate;
+            grid.style.gridTemplateRows = newGridHeightTemplate;
+
+            // Set grid cells
+            grid.innerHTML = newInnerHTML
+
+            document.styleSheets[1].addRule('.grid:before','content: "'+widthInCells+' Modules";');
+            document.styleSheets[1].addRule('.grid:after','content: "'+heightInCells+' Modules";');
+            
+            grid.style.fontSize = `${16/Math.log10(widthInCells)}px`
+
+            // Set Info Spans Content
+            areaSpan.innerHTML = Math.round(((width * height) / 10.76) * 100) / 100
+            modulesSpan.innerHTML = quantityOfCells;
+        }
+
+        widthInput.addEventListener("input", updateWidth)
+
+        heightInput.addEventListener("input", updateHeight)
+
+        incWidth.addEventListener('click', function(e) {
+            width = widthInput.value;
+            widthInput.value = Number.parseFloat(width) + 1.5;
+
+            updateWidth();
+        })
+
+        decWidth.addEventListener('click', function(e) {
+            width = widthInput.value;
+            if (width > 1.5) {
+                widthInput.value = Number.parseFloat(width) - 1.5;
+                updateWidth();
+            }
+        })
+
+        incHeight.addEventListener('click', function(e) {
+            height = heightInput.value;
+            heightInput.value = Number.parseFloat(height) + 3;
+            updateHeight();
+        })
+
+        decHeight.addEventListener('click', function(e) {
+            height = heightInput.value;
+            if(height > 3) {
+                heightInput.value = Number.parseFloat(height) - 3;
+                updateHeight();
+            }
+        })
+
+        updateWidth();
+        updateHeight();
+        updateGrid();
+
+    </script>
+    <script src="/index.js"></script>
+    <script src="/bootstrap.bundle.min.js"></script>
+</body>
+</html>
